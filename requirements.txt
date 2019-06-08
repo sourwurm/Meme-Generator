@@ -1,0 +1,18 @@
+# MODULES TO IMPORT:
+
+Import from PIL import Image, ImageFilter, ImageEnhance, ImageFont, ImageDraw
+import os, random
+import textwrap
+
+
+The functions take directory paths as inputs, here is an example:
+
+##root = 'D', root_dir = 'Users', sub_dir = 'Jose', 
+##folder = 'pictures', filename = 'wedding_ceremony', filetype = 'png'
+
+No periods or backslashes are needed for normal use, but if you need to access an image that is within a "deeper"
+directory, I suggest modifying the folder input to accomodate this. For example:
+
+##folder = 'pictureS\\2018\\wedding'
+
+
