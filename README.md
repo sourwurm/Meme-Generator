@@ -5,4 +5,4 @@ the user to add text to their image. This text can be either user inputted, or r
 
 Example:
 
-![]('https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%2Fpin%2F380976449728326388%2F&psig=AOvVaw3YX_5o4eu-5VivX-0NoVWB&ust=1596695044786000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCOiB9-C2g-sCFQAAAAAdAAAAABAD')
+![](https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%2Fpin%2F380976449728326388%2F&psig=AOvVaw3YX_5o4eu-5VivX-0NoVWB&ust=1596695044786000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCOiB9-C2g-sCFQAAAAAdAAAAABAD)
