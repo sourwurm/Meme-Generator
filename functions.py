@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# # Meme Generator
+
 from PIL import Image, ImageFilter, ImageEnhance, ImageFont, ImageDraw
 import os, random
 import textwrap
@@ -5,31 +10,21 @@ import textwrap
 
 
 
-
-
-"""A collection of function for doing my project."""
-
-def deep_fryer(root = 'C', root_dir = 'Users', sub_dir = 'BALTHASAR - 02', 
-               folder = 'Downloads', filename = 'untitled', filetype = 'jpg'):
+def deep_fryer(address = 'C:\\Users\\BALTHASAR - 02\\Downloads\\', filename = 'untitled.jpg'):
     
-    """ Accesses an image in a specified directory, and modifies contrast and color values.
-    
+    """ 
+    Accesses an image in a specified directory, and modifies contrast and color values.
+
+    -------------
     PARAMETERS:
+    -------------
+        address  | file directory minus the file name.
+        
+        filename | the name of the image file you wish to access. include filetype (.png, .png, etc).
+        
+        """
     
-        root | string, root of ones directory (such as E, D, or C)
-        
-        root_dir | string, the root folder of the directory to be used (i.e. Program Files, Users, etc.)
-        
-        sub_dir | string, the sub directory within the root directory. Will vary depending on the root folder
-                selected (i.e. if root_dir is Users: sub_dir may be the username such as John or DavidsPC)
-                
-        folder | the folder within the sub directory that you wish to access (i.e. Documents, Pictures, Downloads)
-        
-        filename | the name of the file you wish to access
-        
-        filetype | the image type of the file you are accessing. DO NOT include any periods. (i.e. jpg, png, etc.)"""
-    
-    directory = (root + ':\\' + root_dir + '\\' + sub_dir + '\\' + folder + '\\' + filename + '.' + filetype)
+    directory = (address + filename)
     
     
     untitled = Image.open(directory)
@@ -48,63 +43,59 @@ def deep_fryer(root = 'C', root_dir = 'Users', sub_dir = 'BALTHASAR - 02',
     source[B].paste(out, None, mask)
 
     ##Recombines the bands into one image
-    im = Image.merge(untitled.mode, source)
+    img = Image.merge(untitled.mode, source)
 
     ##retrieves the image and assigns it to the Contrast fucntion, which allows me to adjust the contrast
-    get_fry = ImageEnhance.Contrast(im)
+    fried = ImageEnhance.Contrast(img)
 
     #enhance now knows to take from the contrast function, the value in parentheses is the value by which the
-    #contrast of the image will be raised
-    # 8.5 = 750% increase in contrast
-
-    fried = get_fry.enhance(8.5)
+    #contrast of the image will be raised by a factor of 8.5
+    fried = fried.enhance(8.5)
     
-    dir_no_file = (root + ':\\' + root_dir + '\\' + sub_dir + '\\' + folder + '\\')
-    
-    fry_out = fried.save(dir_no_file + 'fried.jpg')
-
     ##Presents the image, after all modifications have been done
-    return fry_out
+    return fried
 
-def add_text(root = 'C', root_dir = 'Users', sub_dir = 'BALTHASAR - 02', 
-               folder = 'Downloads'):
+
+def add_text(img, caption = '', caption_2 = '', font_ = 'Impact.ttf', save_to = False):
     
-    """ Accesses the image created by the function deep_fryer() and adds text to it.
-        Additionally, can be used to add text to any image, as long as the image is named fried.jpg.
-        
-        This function works best with images that are 500x500 pixels, as some text strings will not
-        properly fit on the page.
+    """ 
+    Adds text to an inputted image and displays it.
     
-    
+    --------------
     PARAMETERS:
-    
-        root | string, root of ones directory (such as E, D, or C)
+    --------------
+        img       | image of type PIL.image.image, or a directory that leads to an image.
         
-        root_dir | string, the root folder of the directory to be used (i.e. Program Files, Users, etc.)
+        caption   | (optional) a custom caption to be placed on the upper half of the image
         
-        sub_dir | string, the sub directory within the root directory. Will vary depending on the root folder
-                selected (i.e. if root_dir is Users: sub_dir may be the username such as John or DavidsPC)
-                
-        folder | the folder within the sub directory that you wish to access (i.e. Documents, Pictures, Downloads)
+        caption_2 | (optional) a second custom caption to be placed on the lower half of the image
         
-        ENSURE THESE INPUTS MATCH THE ONES USED IN deep_fryer()"""
+        font_     | (optional) Truetype font for the text. Fonts must be available under the Windows /fonts directory.
+                    Will return an OSerror if the font is not installed.
+                        
+        save_to   | (optional) directory for which to save the image. Must include filename and filetype as well.
+        
+        """
     
+    if type(img) == str:
+        image = Image.open(address)
+        
+    else:
+        image = img
     
-    directory = (root + ':\\' + root_dir + '\\' + sub_dir + '\\' + folder + '\\' + 'fried.jpg')
-    
-    
-    #opens the image
-    image = Image.open(directory)
+    #resisizing image
+    image = image.resize((600,500))
+        
+    #retrieves the font I will be using for the image
+    font = ImageFont.truetype(font_, 30)
+
+    #coordinates for the text, x2 and y2 being the coordinates for the second text
+    #ratios used in order to be compatible with varying image dimensions
+    (x, y) = (50, 40)
+    (x2, y2) = (50, 550)
     
     #creates a variable allowing me to edit the image
     draw = ImageDraw.Draw(image)
-    
-    #retrieves the font I will be using for the image
-    font = ImageFont.truetype('impact.ttf', size = 40)
-    
-    #coordinates for the text, x2 and y2 being the coordinates for the second text
-    (x, y) = (50,40)
-    (x2, y2) = (50, 550)
     
     #list of possible jokes
     jokes = ['I am guilty of 12 counts of \nhome invasion in the state of Lousiana \nfrom the years 2008 - 2012',
@@ -127,8 +118,14 @@ def add_text(root = 'C', root_dir = 'Users', sub_dir = 'BALTHASAR - 02',
              
     '10 year old me explaining why I need a \nclub penguin membership to have different colored \nigloos and puffins']
 
-    #randomly assigns a value from the list
-    text = random.choice(jokes)
+    
+    if len(caption) > 0:
+        text = caption
+        
+    else:
+        
+        #randomly assigns a value from the list
+        text = random.choice(jokes)
     
     #colors that will be used for the images, 1 for text, and 2 for text2
     fill_1 = 'rgb(255,255,255)'
@@ -149,9 +146,27 @@ def add_text(root = 'C', root_dir = 'Users', sub_dir = 'BALTHASAR - 02',
     #generates a random float between 0 and 1
     chance = random.random()
     
+    
     #sets a condition that if true, will generate another value from the 
-    #list and assign it to a new variable, text2
-    if chance >= 0.75:
+    #list and assign it to a new variable, text2   
+    if len(caption_2) > 0:
+        text2 = caption_2
+        
+        #text2 is given a border and fill, then applied to the image
+        #SOURCE: https://mail.python.org/pipermail/image-sig/2009-May/005681.html
+        draw.text((x2-1, y2-1), text2, font=font, fill = outline_2)
+        draw.text((x2+1, y2-1), text2, font=font, fill = outline_2)
+        draw.text((x2-1, y2+1), text2, font=font, fill = outline_2)
+        draw.text((x2+1, y2+1), text2, font=font, fill = outline_2)
+        
+        meme_2 = draw.text((x2, y2), text2, fill = fill_2, font = font)
+        
+        #fin_meme is the final output of all added text if this condition is filled
+        #will show the final image
+        fin_meme = image.show(meme_2)
+        
+        
+    elif chance >= 0.75 and len(caption) == 0:
         
         text2 = random.choice(jokes)
         
@@ -174,16 +189,43 @@ def add_text(root = 'C', root_dir = 'Users', sub_dir = 'BALTHASAR - 02',
         #fin_meme becomes the output of only the original text variable being put on the image
         #will show the final image
         fin_meme = image.show(meme)
+
+        
+    if save_to:
+        
+        fin_meme.save(save_to)
     
     return fin_meme
 
 
-def meme_generator(root = 'C', root_dir = 'Users', sub_dir = 'BALTHASAR - 02', folder = 'Downloads',
-                  filename = 'untitled', filetype = 'jpg'):
+def meme_generator(address = 'C:\\Users\\BALTHASAR - 02\\Downloads\\',
+                  filename = 'untitled.jpg', caption = '', caption_2 = '',
+                   font_ = 'Impact', save_to = False):
     
+    '''
+    Returns a captioned image with edited visuals and added text.
     
-    deep_fryer(root, root_dir, sub_dir, folder, filename, filetype )
+    -----------
+    PARAMETERS:
+    -----------
+    address   | file directory minus the file name.
+
+    filename  | the name of the image file you wish to access. include filetype (.png, .png, etc).
+   
+    img       | image of type PIL.image.image, or a directory that leads to an image.
+
+    caption   | (optional) a custom caption to be placed on the upper half of the image
+
+    caption_2 | (optional) a second custom caption to be placed on the lower half of the image
     
+    font_     | (optional) the font for the text. Fonts must be available under the Windows /fonts directory.
     
+    save_to   | (optional) directory for which to save the image. Must include filename and filetype as well.
+        
+    '''
     
-    add_text(root, root_dir, sub_dir, folder)
+    image = deep_fryer(address, filename)
+    
+    finished = add_text(image, caption, caption_2, font_, save_to)
+    
+    return finished
