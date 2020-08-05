@@ -5,4 +5,4 @@ the user to add text to their image. This text can be either user inputted, or r
 
 Example:
 
-![]('/example.jpg')
+![](/example.jpg)
