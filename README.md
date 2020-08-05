@@ -4,6 +4,6 @@ This provides the user a list of functions that can be used to edit images in th
 the user to add text to their image. This text can be either user inputted, or randomly selected from a provided list. Enjoy!
 
 
-Example:
+Deep Fried Meme Example:
 
 ![](/example.jpg)
